@@ -1,0 +1,13 @@
+target/
+dependency-reduced-pom.xml
+.logs/
+.runtime/
+*.log
+*.tmp
+.DS_Store
+__pycache__/
+*.pyc
+.idea/
+.vscode/
+experiment-data/
+build-context/

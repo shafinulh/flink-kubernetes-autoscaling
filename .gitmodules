@@ -1,0 +1,8 @@
+[submodule "sources/benchmarks/nexmark-sql-benchmarks"]
+	path = sources/benchmarks/nexmark-sql-benchmarks
+	url = git@github.com:shafinulh/nexmark.git
+	branch = master
+[submodule "sources/operators/flink-kubernetes-operator-justin"]
+	path = sources/operators/flink-kubernetes-operator-justin
+	url = git@github.com:shafinulh/flink-kubernetes-operator-justin.git
+	branch = main

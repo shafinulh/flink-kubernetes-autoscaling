@@ -1,0 +1,13 @@
+.git
+.gitmodules
+**/.git
+**/target
+**/.idea
+**/node_modules
+**/.angular
+**/.eslintcache
+**/japicmp-output
+**/__pycache__
+**/*.pyc
+experiment-data
+
