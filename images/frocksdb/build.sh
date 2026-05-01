@@ -16,4 +16,4 @@ docker run --rm \
     --entrypoint /rocksdb-host/java/crossbuild/docker-build-linux-ubuntu.sh \
     ${IMAGE_NAME}
 
-cp "${FROCKSDB_SOURCE}/java/target/rocksdbjni-*-linux*.jar" "${FLINK_RUNTIME_A4S_SOURCE}/"
+cp ${FROCKSDB_SOURCE}/java/target/rocksdbjni-*-linux*.jar "${FLINK_RUNTIME_A4S_SOURCE}/"
