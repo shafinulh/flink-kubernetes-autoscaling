@@ -16,8 +16,7 @@ RUN --mount=type=cache,target=/root/.m2 \
     -DgroupId=org.rocksdb \
     -DartifactId=frocksdbjni \
     -Dversion=6.20.3-custom \
-    -Dpackaging=jar && \
-  mvn clean install -T 8 -DskipTests -Dspotless.check.skip=true -Drat.skip=true -Dcheckstyle.skip
+    -Dpackaging=jar
 RUN --mount=type=cache,target=/root/.m2 mvn clean install -T 8 -DskipTests -Dspotless.check.skip=true -Drat.skip=true -Dcheckstyle.skip
 
 FROM ghcr.io/apache/flink-docker:1.18-SNAPSHOT-scala_2.12-java11-debian
