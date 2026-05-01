@@ -1,0 +1,24 @@
+# Compiled class file
+**/*.class
+
+# Log file
+**/*.log
+
+# Package Files
+**/*.jar
+!nexmark-flink-0.3-SNAPSHOT.jar
+**/*.war
+**/*.nar
+**/*.ear
+**/*.zip
+**/*.tar.gz
+**/*.rar
+
+### Maven template
+**/target/
+**/dependency-reduced-pom.xml
+**/.mvn/timing.properties
+
+**/.idea
+**/*.iml
+**/*.DS_Store

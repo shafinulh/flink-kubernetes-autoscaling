@@ -6,12 +6,6 @@
 	path = sources/operators/flink-kubernetes-operator-justin
 	url = git@github.com:shafinulh/flink-kubernetes-operator-justin.git
 	branch = main
-[submodule "sources/operators/flink-kubernetes-operator-a4s"]
-	path = sources/operators/flink-kubernetes-operator-a4s
-	url = git@github.com:RyanL123/flink-kubernetes-operator-a4s.git
-[submodule "sources/flink/flink-runtime-1-18-a4s"]
-	path = sources/flink/flink-runtime-1-18-a4s
-	url = git@github.com:RyanL123/flink-runtime-1-18-a4s.git
 [submodule "sources/libs/frocksdb"]
 	path = sources/libs/frocksdb
 	url = git@github.com:RyanL123/frocksdb.git
