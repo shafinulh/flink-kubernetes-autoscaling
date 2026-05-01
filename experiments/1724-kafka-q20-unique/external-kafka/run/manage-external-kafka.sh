@@ -17,6 +17,8 @@ DATA_DIR="${DATA_DIR:-/opt/flink-kubernetes-autoscaling/${CONTAINER_NAME}/data}"
 IMAGE="${KAFKA_IMAGE:-apache/kafka:3.9.2}"
 KAFKA_PORT="${KAFKA_PORT:-9092}"
 CONTROLLER_PORT="${CONTROLLER_PORT:-9093}"
+KAFKA_PARTITIONS="${KAFKA_PARTITIONS:-24}"
+KAFKA_TOPICS="${KAFKA_TOPICS:-nexmark-person nexmark-auction nexmark-bid}"
 
 GREEN='\033[0;32m'; RED='\033[0;31m'; NC='\033[0m'
 
@@ -63,14 +65,21 @@ wait_for_kafka() {
 }
 
 create_topics_remote() {
+    local topics_literal=""
+    local topic
+
+    for topic in ${KAFKA_TOPICS}; do
+        topics_literal+=" '${topic}'"
+    done
+
     ssh_remote "sudo -n docker exec ${CONTAINER_NAME} bash -lc '
         set -euo pipefail
-        topics=(bids auctions persons nexmark nexmark-person nexmark-auction nexmark-bid)
+        topics=(${topics_literal})
         for topic in \"\${topics[@]}\"; do
-            /opt/kafka/bin/kafka-topics.sh --create --if-not-exists --bootstrap-server 127.0.0.1:${KAFKA_PORT} --topic \"\${topic}\" --partitions 24 --replication-factor 1 >/dev/null
+            /opt/kafka/bin/kafka-topics.sh --create --if-not-exists --bootstrap-server 127.0.0.1:${KAFKA_PORT} --topic \"\${topic}\" --partitions ${KAFKA_PARTITIONS} --replication-factor 1 >/dev/null
             current_partitions=\$(/opt/kafka/bin/kafka-topics.sh --describe --bootstrap-server 127.0.0.1:${KAFKA_PORT} --topic \"\${topic}\" | grep -o \"PartitionCount: [0-9]\\+\" | head -n1 | tr -cd \"0-9\")
-            if [ -n \"\${current_partitions}\" ] && [ \"\${current_partitions}\" -lt 24 ]; then
-                /opt/kafka/bin/kafka-topics.sh --alter --bootstrap-server 127.0.0.1:${KAFKA_PORT} --topic \"\${topic}\" --partitions 24 >/dev/null
+            if [ -n \"\${current_partitions}\" ] && [ \"\${current_partitions}\" -lt ${KAFKA_PARTITIONS} ]; then
+                /opt/kafka/bin/kafka-topics.sh --alter --bootstrap-server 127.0.0.1:${KAFKA_PORT} --topic \"\${topic}\" --partitions ${KAFKA_PARTITIONS} >/dev/null
             fi
         done
         /opt/kafka/bin/kafka-topics.sh --list --bootstrap-server 127.0.0.1:${KAFKA_PORT}

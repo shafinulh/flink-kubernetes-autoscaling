@@ -19,9 +19,21 @@ for bin in docker kubeadm kubelet kubectl helm containerd; do
   need_local "${bin}"
 done
 
+if ! sudo -n true >/dev/null 2>&1; then
+  missing+=("local:passwordless-sudo")
+fi
+
+if [[ "$(id -u)" -ne 0 && -r "${SHARED_KUBECONFIG}" ]]; then
+  kubeconfig_gid="$(getent group "${KUBECONFIG_GROUP}" | cut -d: -f3 || true)"
+  if [[ -z "${kubeconfig_gid}" ]] || ! id -G | tr ' ' '\n' | grep -qx "${kubeconfig_gid}"; then
+    missing+=("local:${USER}:not-in-${KUBECONFIG_GROUP}")
+  fi
+fi
+
 for node in "${WORKERS[@]}"; do
   echo "Worker: ${node}"
   ssh -o BatchMode=yes -o ConnectTimeout=5 "${node}" "true" || missing+=("${node}:ssh")
+  ssh -o BatchMode=yes -o ConnectTimeout=5 "${node}" "sudo -n true" || missing+=("${node}:passwordless-sudo")
   for bin in kubeadm kubelet kubectl containerd; do
     need_remote "${node}" "${bin}"
   done

@@ -26,3 +26,14 @@ The shared kubeconfig defaults to:
 ```text
 /etc/flink-kubernetes-autoscaling/kubeconfig
 ```
+
+Cluster users should be members of the Unix group configured by
+`KUBECONFIG_GROUP` in `env.sh` (`users` by default). That group can read the
+shared kubeconfig, so scripts that use `kubectl` or `helm` work from any
+checkout path without copying credentials into each repository.
+
+Host-level rebuilds are different from Kubernetes API operations:
+`01-reset-cluster.sh` runs `kubeadm`, restarts `containerd`/`kubelet`, and
+writes `/etc/kubernetes` state. Those actions still require passwordless sudo
+on the control-plane and workers. Day-to-day status, monitoring, operator, and
+job scripts use the shared kubeconfig and do not require sudo.

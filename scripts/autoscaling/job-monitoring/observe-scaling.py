@@ -20,13 +20,19 @@ import base64
 import gzip
 import io
 import json
+import os
 import re
 import subprocess
 import time
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
 
 import yaml
+
+SHARED_KUBECONFIG = Path("/etc/flink-kubernetes-autoscaling/kubeconfig")
+if "KUBECONFIG" not in os.environ and os.access(SHARED_KUBECONFIG, os.R_OK):
+    os.environ["KUBECONFIG"] = str(SHARED_KUBECONFIG)
 
 
 @dataclass

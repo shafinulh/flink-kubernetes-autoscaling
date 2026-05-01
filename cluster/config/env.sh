@@ -23,6 +23,7 @@ export OPERATOR_IMAGE="${REGISTRY}/${OPERATOR_LOCAL}"
 
 export CRI_RUNTIME_ENDPOINT="${CRI_RUNTIME_ENDPOINT:-unix:///run/containerd/containerd.sock}"
 export SHARED_KUBECONFIG="${SHARED_KUBECONFIG:-/etc/flink-kubernetes-autoscaling/kubeconfig}"
+export KUBECONFIG_GROUP="${KUBECONFIG_GROUP:-users}"
 
 export HELM_CHART="${HELM_CHART:-${OPERATOR_SOURCE}/helm/flink-kubernetes-operator}"
 export OPERATOR_VALUES="${OPERATOR_VALUES:-${CLUSTER_ROOT}/operator/values.yaml}"

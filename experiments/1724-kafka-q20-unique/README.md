@@ -72,8 +72,17 @@ producer restarts inherit the same container and Flink runtime sizing.
 
 ## Start A Run
 
+Pre-pull the Kubernetes job image on the cluster nodes and the Kafka/producer
+images on the external host. This keeps image transfer work out of the job and
+producer startup path.
+
+```bash
+scripts/autoscaling/cluster-management/05-prepull-images.sh --target-host "${TARGET_HOST}"
+```
+
 Reset external Kafka. This starts the broker if needed and recreates the
-Nexmark topics with empty state.
+three q20_unique Kafka topics with empty state:
+`nexmark-person`, `nexmark-auction`, and `nexmark-bid`.
 
 ```bash
 experiments/1724-kafka-q20-unique/external-kafka/run/manage-external-kafka.sh reset

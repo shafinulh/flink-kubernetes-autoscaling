@@ -13,7 +13,14 @@ scripts/autoscaling/cluster-management/01-reset-cluster.sh
 scripts/autoscaling/cluster-management/02-label-nodes.sh
 scripts/autoscaling/cluster-management/03-deploy-monitoring.sh
 scripts/autoscaling/cluster-management/04-deploy-operator.sh
+scripts/autoscaling/cluster-management/05-prepull-images.sh
 ```
+
+The scripts derive paths from their own location, so the repository can be
+checked out anywhere. Users who should operate the cluster need membership in
+the shared kubeconfig group from `cluster/config/env.sh` (`users` by default).
+Only `01-reset-cluster.sh` needs passwordless sudo, because kubeadm
+and kubelet/containerd service management are host-level operations.
 
 Other cluster commands:
 
@@ -32,6 +39,10 @@ Preview the operator Helm command without touching the cluster:
 ```bash
 scripts/autoscaling/cluster-management/04-deploy-operator.sh --dry-run
 ```
+
+Run `05-prepull-images.sh` before submitting a job or starting the external
+producer. It warms the CRI image cache on the Kubernetes nodes and the Docker
+image cache on the external Kafka/producer host.
 
 ## Job Management
 
